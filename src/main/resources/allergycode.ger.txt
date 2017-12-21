@@ -1,0 +1,14 @@
+A=Gluten
+B=Krebstiere
+C=Eier
+D=Fisch
+E=Erdnüsse
+F=Soja
+G=Milch
+H=Schalenfrüchte
+L=Sellerie
+M=Senf
+N=Sesam
+O=Schwefeldioxid
+P=Lupinien
+R=Weichtiere
