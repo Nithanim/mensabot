@@ -196,6 +196,27 @@ public class MensaBot implements CombinedBot {
             }
         } else if (split.length == 2) {
             String cat = split[1];
+            if(dataProvider.getMensaData() == null) {
+                /* copied from below */
+                logger.info("Served: No data available", query);
+                m.setChatId(chatId)
+                    .setParseMode("Markdown")
+                    .disableWebPagePreview()
+                    .setText(
+                        "\u26a1 \u26a1 \u26a1 `No data available, sorry` \u26a1 \u26a1 \u26a1 \n"
+                        + "Visit the sites directly insted: \n"
+                        + getMensaLinks()
+                    );
+
+                EditMessageText e = generateMensaMenu("mensamenu:" + Arrays.stream(split).limit(split.length - 1).collect(Collectors.joining(":")), chatId);
+                execute(new SendMessage()
+                    .setChatId(chatId)
+                    .setText(e.getText())
+                    .setReplyMarkup(e.getReplyMarkup())
+                );
+                return m;
+                /* end copy */
+            }
             CategoryData catData = dataProvider.getMensaData().getCategories().get(cat);
             if (catData != null) {
                 logger.info("Served: {}", query);
@@ -287,7 +308,7 @@ public class MensaBot implements CombinedBot {
             sb.append(" ").append(mealPrice).append("  ");
         }
 
-        String mealFoodCharacteristics = generateFoodCharacteristicsString(meal.getAttachments());
+        String mealFoodCharacteristics = generateFoodCharacteristicsString(meal.getFoodCharacteristics());
         if (!mealFoodCharacteristics.isEmpty()) {
             sb.append(mealFoodCharacteristics);
             sb.append("   ");

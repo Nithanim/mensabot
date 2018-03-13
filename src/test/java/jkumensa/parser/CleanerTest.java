@@ -3,6 +3,7 @@ package jkumensa.parser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import jkumensa.parser.jku.Cleaner;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

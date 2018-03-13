@@ -17,10 +17,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import jkumensa.parser.JkuMensaParser;
 import jkumensa.parser.data.CategoryData;
 import jkumensa.parser.data.MensaDayData;
 import jkumensa.parser.i.Mensa;
+import jkumensa.parser.jku.JkuMensaParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -95,7 +95,7 @@ public class DataProvider {
             if (reqDate.getHour() > 16) { //switch to new day after mid-day
                 reqDate.plusDays(1);
             }
-            if(reqDate.getDayOfWeek().getValue() >= DayOfWeek.SATURDAY.getValue()) {
+            if (reqDate.getDayOfWeek().getValue() >= DayOfWeek.SATURDAY.getValue()) {
                 reqDate = reqDate.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
             }
             logger.debug("Determined interesting mensa date as {}", reqDate.toLocalDate());
@@ -112,7 +112,7 @@ public class DataProvider {
         } catch (IOException ex) {
             logger.error("Unable to update mensa", ex);
             //keep previous data
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             logger.error("Unable to update mensa", ex);
             mensaData = null; //default to "unknown" to prevent confusion
         }
