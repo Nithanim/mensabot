@@ -195,7 +195,7 @@ public class MensaBot implements CombinedBot {
                     .setText(mensaMenuFormatter.getMensaTitle(data.getMensa().toString(), data.getDate()))
                 );
 
-                for (Category cat : data.getCategories().values()) {
+                for (Category cat : data.getCategories()) {
                     String txt = mensaMenuFormatter.getCategory(cat);
                     execute(new SendMessage()
                         .setChatId(chatId)

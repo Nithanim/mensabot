@@ -192,12 +192,12 @@ public class DataProvider {
 
     public class MensaData {
         private final LocalDate date;
-        private final Map<String, Category> categories;
+        private final List<? extends Category> categories;
         private final Mensa mensa;
 
         public MensaData(Mensa mensa, MensaDay parsed) {
             this.date = parsed.getDate();
-            this.categories = parsed.getCategories().stream().collect(Collectors.toMap(c -> c.getTitle(), c -> c));
+            this.categories = parsed.getCategories();
             this.mensa = mensa;
         }
 
@@ -209,7 +209,7 @@ public class DataProvider {
             return date;
         }
 
-        public Map<String, Category> getCategories() {
+        public List<? extends Category> getCategories() {
             return categories;
         }
     }
