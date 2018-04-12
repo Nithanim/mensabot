@@ -80,7 +80,7 @@ public class MensaBot implements CombinedBot {
             CallbackQuery q = update.getCallbackQuery();
 
             if (q.getData().startsWith("mensamenu")) { //convert to new system
-                EditMessageText e = generateMensaMenu(q.getData(), q.getMessage().getChatId());
+                EditMessageText e = generateMensaMenu("newmensamenu", q.getMessage().getChatId());
                 return new SendMessage()
                     .setChatId(q.getMessage().getChatId())
                     .setText(e.getText())
