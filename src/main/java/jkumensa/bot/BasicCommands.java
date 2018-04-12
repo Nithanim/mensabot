@@ -99,6 +99,7 @@ public class BasicCommands {
                     .setText(
                         "/help \u27a1 This help\n"
                         + "/mensen \u27a1 Links to menu plans on the official websites\n"
+                        + "/legend \u27a1 Overview over used symbols\n"
                         + "/allergycodes \u27a1 Print allergy codes\n"
                         + "/feedback <text> \u27a1 You can leave some feedback if you want\n"
                         + "/start \u27a1 Initial command, gives menu"
@@ -109,19 +110,33 @@ public class BasicCommands {
         BiFunction<MensaBot, Update, SendMessage> allergieliste = (mb, update) -> {
             try (InputStream in = BasicCommands.class.getResourceAsStream("/allergycode.ger.txt")) {
                 return new SendMessage()
-                .setChatId(update.getMessage().getChatId())
-                .setText("No warranty given!\n\n" + IOUtils.toString(in, StandardCharsets.UTF_8));
-            } catch(IOException ex) {
+                    .setChatId(update.getMessage().getChatId())
+                    .setText("No warranty given!\n\n" + IOUtils.toString(in, StandardCharsets.UTF_8));
+            } catch (IOException ex) {
                 logger.error("Unable to load allergies!");
                 return new SendMessage()
-                .setChatId(update.getMessage().getChatId())
-                .setText("Unable to load allergy codes!");
+                    .setChatId(update.getMessage().getChatId())
+                    .setText("Unable to load allergy codes!");
             }
         };
 
         map.put("allergycodes", allergieliste);
         map.put("allergieliste", allergieliste);
         map.put("allergene", allergieliste);
+
+        BiFunction<MensaBot, Update, SendMessage> legend = (mb, update) -> {
+            return new SendMessage()
+                .setChatId(update.getMessage().getChatId())
+                .setText(
+                    "\ud83c\udf3b vegan\n"
+                    + "\ud83c\uDF31 vegetarisch\n"
+                    + "\ud83d\udc1f Fish\n"
+                    + "\ud83d\udca1 Brainfood\n"
+                    + "\ud83c\udf0a MSC"
+                );
+        };
+        map.put("legende", legend);
+        map.put("legend", legend);
 
         COMMANDS = map;
     }
