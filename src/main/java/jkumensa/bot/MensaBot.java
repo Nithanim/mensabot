@@ -74,6 +74,8 @@ public class MensaBot implements CombinedBot {
     @Override
     @SneakyThrows
     public BotApiMethod onWebhookUpdateReceived(Update update) {
+        logger.debug("Processing request with id {}",update.getUpdateId());
+        
         if (update.hasMessage() && update.getMessage().hasText()) {
             return handleBasicMessage(update);
         } else if (update.hasCallbackQuery()) {
@@ -118,6 +120,7 @@ public class MensaBot implements CombinedBot {
             }
 
             String command = text.substring(1, firstSpacePos);
+            logger.debug("Handling basic command \"{}\"", command);
             return BasicCommands.COMMANDS.get(command.toLowerCase()).apply(this, update);
         } else {
             //No command message by user
