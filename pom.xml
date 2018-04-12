@@ -15,7 +15,7 @@
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots</artifactId>
-            <version>3.2</version>
+            <version>3.6</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.glassfish.grizzly</groupId>
