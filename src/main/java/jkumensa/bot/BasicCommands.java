@@ -2,11 +2,10 @@ package jkumensa.bot;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.function.BiFunction;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.methods.ForwardMessage;
@@ -109,9 +108,18 @@ public class BasicCommands {
 
         BiFunction<MensaBot, Update, SendMessage> allergieliste = (mb, update) -> {
             try (InputStream in = BasicCommands.class.getResourceAsStream("/allergycode.ger.txt")) {
+                Scanner s = new Scanner(in, "UTF-8");
+                StringBuilder sb = new StringBuilder().append("No warranty given!\n\n");
+                while (s.hasNextLine()) {
+                    String l = s.nextLine();
+                    String[] split = l.split("=", 2);
+                    sb.append('*').append(split[0]).append("*: ");
+                    sb.append(split[1]).append('\n');
+                }
                 return new SendMessage()
                     .setChatId(update.getMessage().getChatId())
-                    .setText("No warranty given!\n\n" + IOUtils.toString(in, StandardCharsets.UTF_8));
+                    .setText(sb.toString())
+                    .setParseMode("markdown");
             } catch (IOException ex) {
                 logger.error("Unable to load allergies!");
                 return new SendMessage()
