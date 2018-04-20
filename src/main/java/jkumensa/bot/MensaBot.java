@@ -3,10 +3,13 @@ package jkumensa.bot;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import jkumensa.api.Mensa;
+import jkumensa.api.MensaCategory;
+import jkumensa.bot.datahandling.DataProvider;
 import jkumensa.bot.workaround.CombinedBot;
-import jkumensa.parser.i.Category;
-import jkumensa.parser.i.Mensa;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -37,7 +40,7 @@ public class MensaBot implements CombinedBot {
 
     private final MensaMenuFormatter mensaMenuFormatter = new MensaMenuFormatter();
 
-    public MensaBot(Properties p) throws IOException {
+    public MensaBot(Properties p, DataProvider dataProvider) throws IOException {
         botToken = p.getProperty("bot.token");
         botUsername = p.getProperty("bot.username");
         botUrl = p.getProperty("bot.url");
@@ -45,9 +48,7 @@ public class MensaBot implements CombinedBot {
 
         userFeedback = new UserFeedback(feedbackChatId);
 
-        dataProvider = new DataProvider();
-        dataProvider.update();
-        dataProvider.start();
+        this.dataProvider = dataProvider;
         {
             inlineKeyboardMensaSelection = new InlineKeyboardMarkup()
                 .setKeyboard(
@@ -74,8 +75,8 @@ public class MensaBot implements CombinedBot {
     @Override
     @SneakyThrows
     public BotApiMethod onWebhookUpdateReceived(Update update) {
-        logger.debug("Processing request with id {}",update.getUpdateId());
-        
+        logger.debug("Processing request with id {}", update.getUpdateId());
+
         if (update.hasMessage() && update.getMessage().hasText()) {
             return handleBasicMessage(update);
         } else if (update.hasCallbackQuery()) {
@@ -106,8 +107,8 @@ public class MensaBot implements CombinedBot {
         } else {
             //unknown message type
             return new SendMessage()
-                    .setChatId(update.getMessage().getChatId())
-                    .setText("Unknown");
+                .setChatId(update.getMessage().getChatId())
+                .setText("Unknown");
         }
     }
 
@@ -146,7 +147,7 @@ public class MensaBot implements CombinedBot {
             try {
                 mensa = Mensa.valueOf(mensaName);
             } catch (IllegalArgumentException ex) {
-                logger.info("Served: unknown of {}", query);
+                logger.info("Served: Unable to parse mensa from query \"{}\"", query);
                 m.setChatId(chatId)
                     .setParseMode("Markdown")
                     .disableWebPagePreview()
@@ -164,8 +165,9 @@ public class MensaBot implements CombinedBot {
                 return m;
             }
 
-            DataProvider.MensaData data = dataProvider.getMensaData().get(mensa);
-            if (data == null) {
+            Map<Mensa, List<? extends MensaCategory>> data = dataProvider.getMensaData().getData();
+            List<? extends MensaCategory> cats = data.get(mensa);
+            if (cats == null) {
                 logger.info("Served: No data available", query);
 
                 m.setChatId(chatId)
@@ -195,10 +197,10 @@ public class MensaBot implements CombinedBot {
                 execute(new SendMessage()
                     .setChatId(chatId)
                     .setParseMode("Markdown")
-                    .setText(mensaMenuFormatter.getMensaTitle(data.getMensa().toString(), data.getDate()))
+                    .setText(mensaMenuFormatter.getMensaTitle(mensa.toString(), dataProvider.getMensaData().getDate()))
                 );
 
-                for (Category cat : data.getCategories()) {
+                for (MensaCategory cat : cats) {
                     String txt = mensaMenuFormatter.getCategory(cat);
                     execute(new SendMessage()
                         .setChatId(chatId)

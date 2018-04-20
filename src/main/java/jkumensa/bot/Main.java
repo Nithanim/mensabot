@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
+import jkumensa.bot.datahandling.DataProvider;
 import jkumensa.bot.workaround.CombinedBot;
 import jkumensa.bot.workaround.PollRelayBot;
 import jkumensa.bot.workaround.SimpleWebhook;
@@ -23,8 +24,26 @@ public class Main {
         Properties p = new Properties();
         p.load(Files.newInputStream(Paths.get("./settings.properties")));
 
+        DataProvider dataProvider = new DataProvider();
+        dataProvider.update();
+        dataProvider.start();
+        
+        ApiHttpServer api;
+        try {
+            String raw = p.getProperty("api.port");
+            if(raw == null) {
+                logger.info("No port for api webserver specified, not starting.");
+                api = null;
+            } else {
+                api = new ApiHttpServer(Integer.parseInt(raw), dataProvider);
+                api.start();
+            }
+        } catch(Exception ex) {
+            throw new RuntimeException("Unable to start api server!", ex);
+        }
+        
         String mode = p.getProperty("bot.mode");
-        CombinedBot bot = new MensaBot(p);
+        CombinedBot bot = new MensaBot(p, dataProvider);
 
         if ("webhook".equals(mode)) {
             logger.info("Starting mensa telegram bot using webhook");
@@ -42,14 +61,6 @@ public class Main {
 
             logger.info("Bot started! 'quit' to shut down...");
 
-            Thread dummy = new Thread(() -> {
-                try {
-                    Thread.sleep(Long.MAX_VALUE);
-                } catch (InterruptedException ex) {
-                }
-            }); 
-            dummy.start(); // keep the jvm alive without non-daemon threads
-            
             waitShutdown(() -> {
                 try {
                     relay.setWebhook("", null);
@@ -58,6 +69,9 @@ public class Main {
                 }
                 bot.stop();
                 webhook.stopServer();
+                if(api != null) {
+                    api.stop();
+                }
             });
 
         } else if ("poll".equals(mode)) {
@@ -76,6 +90,9 @@ public class Main {
             waitShutdown(() -> {
                 bot.stop();
                 session.stop();
+                if(api != null) {
+                    api.stop();
+                }
             });
         }
     }

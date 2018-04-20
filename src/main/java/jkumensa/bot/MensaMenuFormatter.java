@@ -1,19 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jkumensa.bot;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
-import java.util.stream.Collectors;
-import jkumensa.parser.i.Category;
-import jkumensa.parser.i.FoodCharacteristic;
-import jkumensa.parser.i.Meal;
-import jkumensa.parser.i.Priced;
+import jkumensa.api.MensaCategory;
+import jkumensa.api.MensaFoodCharacteristic;
+import jkumensa.api.MensaMeal;
+import jkumensa.api.Priced;
 
 public class MensaMenuFormatter {
     private static final DateTimeFormatter printFormat = DateTimeFormatter.ofPattern("EE dd.MM.yyyy", Locale.GERMAN);
@@ -36,15 +30,15 @@ public class MensaMenuFormatter {
             + "\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\n";
     }
 
-    public String getMensaTitle(String title, LocalDate date) {
-        return "```" + "\n##### " + title + " #####\n" + printFormat.format(date) + "```";
+    public String getMensaTitle(String title, Date date) {
+        return "```" + "\n##### " + title + " #####\n" + printFormat.format(date.toInstant()) + "```";
     }
 
-    public String getCategory(Category cat) {
+    public String getCategory(MensaCategory cat) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("*~~~~~ ").append(cat.getTitle());
-        String catFoodCharacteristics = generateFoodCharacteristicsString(cat.getAttachments());
+        String catFoodCharacteristics = generateFoodCharacteristicsString(cat.getFoodCharacteristics());
         if (!catFoodCharacteristics.isEmpty()) {
             sb.append("  ");
             sb.append(catFoodCharacteristics);
@@ -58,14 +52,14 @@ public class MensaMenuFormatter {
 
         sb.append('\n');
 
-        for (Meal meal : cat.getMeals()) {
+        for (MensaMeal meal : cat.getMeals()) {
             appendMeal(sb, meal);
         }
 
         return sb.toString();
     }
 
-    private void appendMeal(StringBuilder sb, Meal meal) {
+    private void appendMeal(StringBuilder sb, MensaMeal meal) {
         sb.append(meal.getTitle());
 
         String mealPrice = generatePriceString(meal);
@@ -79,7 +73,10 @@ public class MensaMenuFormatter {
             sb.append("   ");
         }
 
-        String allergyString = meal.getAllergyCodes().stream().map(c -> c.name()).collect(Collectors.joining(", "));
+        String allergyString = meal.getAllergyCodes().stream()
+            .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+            .toString();
+
         if (!allergyString.isEmpty()) {
             sb.append(" (");
             sb.append(allergyString);
@@ -103,9 +100,9 @@ public class MensaMenuFormatter {
         }
     }
 
-    private String generateFoodCharacteristicsString(Set<? extends FoodCharacteristic> fcs) {
+    private String generateFoodCharacteristicsString(Set<? extends MensaFoodCharacteristic> fcs) {
         StringBuilder sb = new StringBuilder();
-        for (FoodCharacteristic fc : fcs) {
+        for (MensaFoodCharacteristic fc : fcs) {
             switch (fc) {
                 case VEGAN:
                     //sb.append("\ud83c\udf33");

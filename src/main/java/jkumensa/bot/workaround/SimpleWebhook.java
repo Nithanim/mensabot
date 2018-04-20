@@ -26,7 +26,7 @@ public class SimpleWebhook extends NanoHTTPD implements Webhook {
     @Override
     public void startServer() throws TelegramApiRequestException {
         try {
-            start(NanoHTTPD.SOCKET_READ_TIMEOUT, true);
+            start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
         } catch (IOException ex) {
             throw new TelegramApiRequestException("Unable to start webserver", ex);
         }
