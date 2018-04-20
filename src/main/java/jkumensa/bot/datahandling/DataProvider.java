@@ -63,8 +63,9 @@ public class DataProvider {
                 MensaDay day = filterByDate(f.get(), relevantDay);
                 if (day == null) {
                     logger.info("No data was found for relevant day for {}, skipping", m);
+                } else {
+                    newData.put(m, day.getCategories());
                 }
-                newData.put(m, day.getCategories());
             } catch (Exception ex) {
                 logger.error("Unable to update mensa {}", m, ex);
             }
