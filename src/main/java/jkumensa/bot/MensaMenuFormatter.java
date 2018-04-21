@@ -1,5 +1,8 @@
 package jkumensa.bot;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
@@ -31,7 +34,8 @@ public class MensaMenuFormatter {
     }
 
     public String getMensaTitle(String title, Date date) {
-        return "```" + "\n##### " + title + " #####\n" + printFormat.format(date.toInstant()) + "```";
+        ZonedDateTime a = date.toInstant().atZone(ZoneId.of("Europe/Vienna"));
+        return "```" + "\n##### " + title + " #####\n" + printFormat.format(LocalDate.from(a)) + "```";
     }
 
     public String getCategory(MensaCategory cat) {
