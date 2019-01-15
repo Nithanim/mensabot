@@ -10,7 +10,6 @@ import jkumensa.api.Mensa;
 import jkumensa.api.MensaCategory;
 import jkumensa.bot.datahandling.DataProvider;
 import jkumensa.bot.workaround.CombinedBot;
-import lombok.Getter;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +26,6 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 public class MensaBot implements CombinedBot {
     private static final Logger logger = LoggerFactory.getLogger(MensaBot.class);
 
-    @Getter
-    private final UserFeedback userFeedback;
-
     private final InlineKeyboardMarkup inlineKeyboardMensaSelection;
     private final DataProvider dataProvider;
 
@@ -45,8 +41,6 @@ public class MensaBot implements CombinedBot {
         botUsername = p.getProperty("bot.username");
         botUrl = p.getProperty("bot.url");
         long feedbackChatId = Long.parseLong(p.getProperty("bot.feedbackChatId"));
-
-        userFeedback = new UserFeedback(feedbackChatId);
 
         this.dataProvider = dataProvider;
         {

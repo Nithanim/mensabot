@@ -8,11 +8,9 @@ import java.util.Scanner;
 import java.util.function.BiFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.api.methods.ForwardMessage;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 public class BasicCommands {
     private static final Logger logger = LoggerFactory.getLogger(BasicCommands.class);
@@ -30,42 +28,6 @@ public class BasicCommands {
                     .setChatId(chatId)
                     .setText(e.getText())
                     .setReplyMarkup(e.getReplyMarkup());
-                return message;
-            }
-        );
-
-        map.put(
-            "feedback",
-            (mb, update) -> {
-                String[] split = update.getMessage().getText().split(" ", 2);
-                if (split.length < 2) {
-                    return new SendMessage()
-                        .setChatId(update.getMessage().getChatId())
-                        .setText("You need to say something!");
-                }
-                String text = split[1];
-
-                if (text.length() < 5 || text.length() > 1000) {
-                    return new SendMessage()
-                        .setChatId(update.getMessage().getChatId())
-                        .setText("A reasonable sized feedback would be nice!");
-                }
-
-                SendMessage message = new SendMessage()
-                    .setChatId(update.getMessage().getChatId());
-
-                ForwardMessage forwardMsg = mb.getUserFeedback().writeUserFeedback(mb, update.getMessage());
-                if (forwardMsg != null) {
-                    try {
-                        mb.execute(forwardMsg);
-                        message.setText("Got the feedback!");
-                    } catch (TelegramApiException ex) {
-                        logger.error("Unable to send feedback!", ex);
-                        message.setText("Error sending feedback!");
-                    }
-                } else {
-                    message.setText("DENIED!");
-                }
                 return message;
             }
         );
@@ -100,8 +62,8 @@ public class BasicCommands {
                         + "/mensen \u27a1 Links to menu plans on the official websites\n"
                         + "/legend \u27a1 Overview over used symbols\n"
                         + "/allergycodes \u27a1 Print allergy codes\n"
-                        + "/feedback <text> \u27a1 You can leave some feedback if you want\n"
-                        + "/start \u27a1 Initial command, gives menu"
+                        + "/start \u27a1 Initial command, gives menu\n"
+                        + "by @nithanim"
                     );
             }
         );
