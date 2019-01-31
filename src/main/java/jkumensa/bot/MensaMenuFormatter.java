@@ -1,10 +1,7 @@
 package jkumensa.bot;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
 import jkumensa.api.MensaCategory;
@@ -33,9 +30,8 @@ public class MensaMenuFormatter {
             + "\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\u2b1b\n";
     }
 
-    public String getMensaTitle(String title, Date date) {
-        ZonedDateTime a = date.toInstant().atZone(ZoneId.of("Europe/Vienna"));
-        return "```" + "\n##### " + title + " #####\n" + printFormat.format(LocalDate.from(a)) + "```";
+    public String getMensaTitle(String title, LocalDate date) {
+        return "```" + "\n##### " + title + " #####\n" + printFormat.format(date) + "```";
     }
 
     public String getCategory(MensaCategory cat) {

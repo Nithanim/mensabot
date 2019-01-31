@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +16,8 @@ import jkumensa.api.Mensa;
 import jkumensa.api.MensaApiResult;
 import jkumensa.api.MensaCategory;
 import jkumensa.api.data.MensaApiResultData;
-import jkumensa.parser.data.MensaDayData;
-import jkumensa.parser.i.MensaDay;
+import jkumensa.parser.MensaDay;
+import jkumensa.parser.MensaDayData;
 import jkumensa.parser.jku.JkuMensaParser;
 import jkumensa.parser.khg.KhgMensaParser;
 import lombok.Getter;
@@ -70,7 +69,7 @@ public class DataProvider {
                 logger.error("Unable to update mensa {}", m, ex);
             }
         }
-        mensaData = new MensaApiResultData(Date.from(relevantDay.atStartOfDay(ZoneId.of("Europe/Vienna")).toInstant()), newData);
+        mensaData = new MensaApiResultData(relevantDay.atStartOfDay(ZoneId.of("Europe/Vienna")).toEpochSecond(), newData);
 
         triggerOnUpdateListeners();
     }

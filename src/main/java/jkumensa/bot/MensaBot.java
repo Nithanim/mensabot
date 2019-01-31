@@ -2,6 +2,8 @@ package jkumensa.bot;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -191,7 +193,10 @@ public class MensaBot implements CombinedBot {
                 execute(new SendMessage()
                     .setChatId(chatId)
                     .setParseMode("Markdown")
-                    .setText(mensaMenuFormatter.getMensaTitle(mensa.toString(), dataProvider.getMensaData().getDate()))
+                    .setText(mensaMenuFormatter.getMensaTitle(
+                        mensa.toString(),
+                        Instant.ofEpochSecond(dataProvider.getMensaData().getDatestamp()).atZone(ZoneId.of("Europe/Vienna")).toLocalDate())
+                    )
                 );
 
                 for (MensaCategory cat : cats) {
