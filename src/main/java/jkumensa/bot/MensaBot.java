@@ -42,24 +42,21 @@ public class MensaBot implements CombinedBot {
         botToken = p.getProperty("bot.token");
         botUsername = p.getProperty("bot.username");
         botUrl = p.getProperty("bot.url");
-        long feedbackChatId = Long.parseLong(p.getProperty("bot.feedbackChatId"));
 
         this.dataProvider = dataProvider;
-        {
-            inlineKeyboardMensaSelection = new InlineKeyboardMarkup()
-                .setKeyboard(
+        inlineKeyboardMensaSelection = new InlineKeyboardMarkup()
+            .setKeyboard(
+                Arrays.asList(
                     Arrays.asList(
-                        Arrays.asList(
-                            new InlineKeyboardButton("CLASSIC").setCallbackData("newmensamenu:CLASSIC"),
-                            new InlineKeyboardButton("CHOICE").setCallbackData("newmensamenu:CHOICE")
-                        ),
-                        Arrays.asList(
-                            new InlineKeyboardButton("KHG").setCallbackData("newmensamenu:KHG")
-                        //new InlineKeyboardButton("RAAB").setCallbackData("newmensamenu:RAAB")
-                        )
+                        new InlineKeyboardButton("CLASSIC").setCallbackData("newmensamenu:CLASSIC"),
+                        new InlineKeyboardButton("CHOICE").setCallbackData("newmensamenu:CHOICE")
+                    ),
+                    Arrays.asList(
+                        new InlineKeyboardButton("KHG").setCallbackData("newmensamenu:KHG")
+                    //new InlineKeyboardButton("RAAB").setCallbackData("newmensamenu:RAAB")
                     )
-                );
-        }
+                )
+            );
     }
 
     @Override
@@ -217,13 +214,6 @@ public class MensaBot implements CombinedBot {
                 );
             }
         }
-
-        /*
-            ???
-        if (split.length == 1) {
-            m = generateMensaMenu("mensamenu:" + Arrays.stream(split).limit(split.length - 1).collect(Collectors.joining(":")), chatId);
-        }
-         */
         return m;
     }
 

@@ -27,21 +27,21 @@ public class Main {
         DataProvider dataProvider = new DataProvider();
         dataProvider.update();
         dataProvider.start();
-        
+
         ApiHttpServer api;
         try {
             String raw = p.getProperty("api.port");
-            if(raw == null) {
+            if (raw == null) {
                 logger.info("No port for api webserver specified, not starting.");
                 api = null;
             } else {
                 api = new ApiHttpServer(Integer.parseInt(raw), dataProvider);
                 api.start();
             }
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new RuntimeException("Unable to start api server!", ex);
         }
-        
+
         String mode = p.getProperty("bot.mode");
         CombinedBot bot = new MensaBot(p, dataProvider);
 
@@ -69,7 +69,7 @@ public class Main {
                 }
                 bot.stop();
                 webhook.stopServer();
-                if(api != null) {
+                if (api != null) {
                     api.stop();
                 }
             });
@@ -90,7 +90,7 @@ public class Main {
             waitShutdown(() -> {
                 bot.stop();
                 session.stop();
-                if(api != null) {
+                if (api != null) {
                     api.stop();
                 }
             });

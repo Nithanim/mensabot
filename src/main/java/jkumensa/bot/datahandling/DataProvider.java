@@ -21,6 +21,7 @@ import jkumensa.parser.MensaDayData;
 import jkumensa.parser.jku.JkuMensaParser;
 import jkumensa.parser.khg.KhgMensaParser;
 import lombok.Getter;
+import lombok.Value;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -139,6 +140,7 @@ public class DataProvider {
         return date;
     }
 
+    @Value
     public class MensaData {
         private final LocalDate date;
         private final List<? extends MensaCategory> categories;
@@ -148,18 +150,6 @@ public class DataProvider {
             this.date = parsed.getDate();
             this.categories = parsed.getCategories();
             this.mensa = mensa;
-        }
-
-        public Mensa getMensa() {
-            return mensa;
-        }
-
-        public LocalDate getDate() {
-            return date;
-        }
-
-        public List<? extends MensaCategory> getCategories() {
-            return categories;
         }
     }
 }
