@@ -11,6 +11,11 @@ import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.generics.Webhook;
 import org.telegram.telegrambots.generics.WebhookBot;
 
+/**
+ * Lightweight alternative to the exceptionally convoluted, over-engineered and
+ * unnecessary bot manager. It just uses a mini http webserver accepting the
+ * telegram requests and forwarding it to the webhook bot.
+ */
 public class SimpleWebhook extends NanoHTTPD implements Webhook {
     private final ObjectMapper mapper = new ObjectMapper();
     private WebhookBot bot;

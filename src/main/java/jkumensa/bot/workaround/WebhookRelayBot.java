@@ -3,7 +3,10 @@ package jkumensa.bot.workaround;
 import org.telegram.telegrambots.api.methods.BotApiMethod;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
-
+/**
+ * Acts as a bridge between the {@link TelegramWebhookBot} and the
+ * {@link CombinedBot}.
+ */
 public class WebhookRelayBot extends TelegramWebhookBot {
     private final CombinedBot bot;
 

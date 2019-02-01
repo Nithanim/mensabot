@@ -17,6 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+/**
+ * Main entry point starting the json api server and the telegram bot.
+ */
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 

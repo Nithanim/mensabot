@@ -12,6 +12,9 @@ import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.Update;
 
+/**
+ * Holds the response for basic commands of the telegram bot.
+ */
 public class BasicCommands {
     private static final Logger logger = LoggerFactory.getLogger(BasicCommands.class);
     public static final Map<String, BiFunction<MensaBot, Update, SendMessage>> COMMANDS;

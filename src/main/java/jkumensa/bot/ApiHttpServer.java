@@ -6,6 +6,9 @@ import jkumensa.api.serialization.OrgjsonMensaSerialization;
 import jkumensa.bot.datahandling.DataProvider;
 import lombok.Value;
 
+/**
+ * Creates a mini http webserver exposing the current mensa data as json.
+ */
 public class ApiHttpServer extends NanoHTTPD {
     private final DataProvider dataProvider;
     private volatile DataHolder data = new DataHolder(null, null);
