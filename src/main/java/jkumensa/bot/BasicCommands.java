@@ -100,13 +100,16 @@ public class BasicCommands {
         BiFunction<MensaBot, Update, SendMessage> legend = (mb, update) -> {
             return new SendMessage()
                 .setChatId(update.getMessage().getChatId())
+                .setParseMode("markdown")
                 .setText(
-                    "\ud83c\udf3b vegan\n"
-                    + "\ud83c\uDF31 vegetarisch\n"
-                    + "\ud83d\udc1f Fish\n"
-                    + "\ud83d\udca1 Brainfood\n"
-                    + "\ud83c\udf0a MSC"
-                );
+                    "\ud83d\udc1f ASC\n"
+                    + "\ud83d\udc0b MSC\n"
+                    + "\u267B Österreichisches Umweltzeichen\n"
+                    + "\ud83c\udf7d\ufe0f [Styria Vitalis (grüner Teller)](http://www.mensen.at/siegel#styria)"
+                    + "\ud83c\udf3b Vegan\n"
+                    + "\ud83c\uDF31 Vegetarisch\n"
+                )
+                .disableWebPagePreview();
         };
         map.put("legende", legend);
         map.put("legend", legend);

@@ -104,21 +104,24 @@ public class MensaMenuFormatter {
         StringBuilder sb = new StringBuilder();
         for (MensaFoodCharacteristic fc : fcs) {
             switch (fc) {
+                case ASC:
+                    sb.append("\ud83d\udc1f");
+                    break;
+                case MSC:
+                    //sb.append("\ud83c\udf0a");
+                    sb.append("\ud83d\udc0b");
+                    break;
+                case AUSTRIAN_ENVIRONMENT:
+                    sb.append("\u267B");
+                    break;
+                //case STYRIA_VITALIS:
+                //    sb.append("\ud83c\udf7d\ufe0f");
                 case VEGAN:
                     //sb.append("\ud83c\udf33");
                     sb.append("\ud83c\udf3b ");
                     break;
-                case FISH:
-                    sb.append("\ud83d\udc1f ");
-                    break;
                 case VEGETARIAN:
                     sb.append("\ud83c\uDF31 ");
-                    break;
-                case BRAINFOOD:
-                    sb.append("\ud83d\udca1 ");
-                    break;
-                case MSC:
-                    sb.append("\ud83c\udf0a ");
                     break;
             }
         }
