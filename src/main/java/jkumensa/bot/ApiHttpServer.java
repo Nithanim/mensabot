@@ -14,7 +14,9 @@ public class ApiHttpServer extends NanoHTTPD {
     private volatile DataHolder data = new DataHolder(null, null);
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        new ApiHttpServer(4555, null).start(5000, false);
+        DataProvider dp = new DataProvider();
+        new ApiHttpServer(4555, dp).start(5000, false);
+        dp.start();
     }
 
     public ApiHttpServer(int port, DataProvider dataProvider) {
