@@ -61,16 +61,18 @@ public class MensaMenuFormatter {
 
     private void appendMeal(StringBuilder sb, MensaMeal meal) {
         sb.append(meal.getTitle());
+        sb.append(' ');
 
         String mealPrice = generatePriceString(meal);
         if (!mealPrice.isEmpty()) {
-            sb.append(" ").append(mealPrice).append("  ");
+            sb.append(mealPrice).append(' ');
         }
+        sb.append(' ');
 
         String mealFoodCharacteristics = generateFoodCharacteristicsString(meal.getFoodCharacteristics());
         if (!mealFoodCharacteristics.isEmpty()) {
             sb.append(mealFoodCharacteristics);
-            sb.append("   ");
+            sb.append(' ');
         }
 
         String allergyString = meal.getAllergyCodes().stream()
@@ -118,10 +120,10 @@ public class MensaMenuFormatter {
                 //    sb.append("\ud83c\udf7d\ufe0f");
                 case VEGAN:
                     //sb.append("\ud83c\udf33");
-                    sb.append("\ud83c\udf3b ");
+                    sb.append("\ud83c\udf3b");
                     break;
                 case VEGETARIAN:
-                    sb.append("\ud83c\uDF31 ");
+                    sb.append("\ud83c\uDF31");
                     break;
             }
         }
